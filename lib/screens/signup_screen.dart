@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
@@ -68,18 +69,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
             ),
             const SizedBox(height: 24),
-
             // USERNAME
             TextFieldInput(
               controller: _usernameController,
               hintText: 'Digite um nome de usuário',
-              textInputType: TextInputType.text,
-            ),
-            const SizedBox(height: 24),
-            // BIO
-            TextFieldInput(
-              controller: _bioController,
-              hintText: 'Digite uma biografia',
               textInputType: TextInputType.text,
             ),
             const SizedBox(height: 24),
@@ -98,9 +91,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
               isPass: true,
             ),
             const SizedBox(height: 24),
+            // BIO
+            TextFieldInput(
+              controller: _bioController,
+              hintText: 'Digite uma biografia',
+              textInputType: TextInputType.text,
+            ),
+            const SizedBox(height: 24),
             // BOTAO DE LOGIN
             InkWell(
-              onTap: () {},
+              onTap: () async {
+                // Método que faz a criação do usuário
+                String res = await AuthMethods().signUpUser(
+                  email: _emailController.text,
+                  password: _passwordController.text,
+                  username: _usernameController.text,
+                  bio: _bioController.text,
+                  // PROX COISA, CRIAR UPLOAD DA FT DE PERFIL
+                  file: ,
+                );
+                debugPrint(res);
+              },
               child: Container(
                 width: double.infinity,
                 // CENTRALIZAR O CHILD NO CONTAINER

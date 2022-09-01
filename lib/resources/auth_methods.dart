@@ -19,13 +19,13 @@ class AuthMethods {
     required String password,
     required String username,
     required String bio,
-    required Uint8List file,
+    // required Uint8List file,
   }) async {
     //vai guardar um string com o resultado da operação.
     String res = 'Deu algum erro';
     try {
       //Se nenhum campo está vazio:
-      if (noneSignUpFildEmpty(email, username, password, bio, file)) {
+      if (noneSignUpFildEmpty(email, username, password, bio)) {
         // registra o usuário
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -56,12 +56,9 @@ class AuthMethods {
   }
 
   /// Testa se nenhum dos campos passados por parâmetro é vazio.
-  bool noneSignUpFildEmpty(String email, String username, String password,
-      String bio, Uint8List file) {
-    if (email.isNotEmpty ||
-        password.isNotEmpty ||
-        username.isNotEmpty ||
-        file != null) {
+  bool noneSignUpFildEmpty(
+      String email, String username, String password, String bio) {
+    if (email.isNotEmpty || password.isNotEmpty || username.isNotEmpty) {
       return true;
     }
     return false;

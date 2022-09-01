@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -16,6 +20,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordController = TextEditingController();
   final _bioController = TextEditingController();
   final _usernameController = TextEditingController();
+  // vai armazenar a imagem p/ perfil selecionada pelo usuário.
+  Uint8List? _image;
 
   @override
   void dispose() {
@@ -24,6 +30,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _passwordController.dispose();
     _bioController.dispose();
     _usernameController.dispose();
+  }
+
+  /// método q seleciona uma imagem para ser usada como ft de perfil.
+  void selectImage() async {
+    Uint8List? image = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
   }
 
   @override
@@ -42,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 SvgPicture.asset(
                   'assets/images/ic_instagram.svg',
-                  color: primaryColor,
+                  color: primaryColor.withOpacity(0.8),
                   height: 64,
                 ),
                 // const SizedBox(width: 12),
@@ -53,16 +67,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
             // CIRCULAR PRA PEGAR FT DE PERFIL
             Stack(
               children: [
-                const CircleAvatar(
-                  radius: 64,
-                  backgroundImage: NetworkImage(
-                      'https://99prod.s3.amazonaws.com/uploads/f1350adc-bdfd-43bf-b210-78d1919cbcf5/Google.png'),
-                ),
+                _image != null
+                    //se houver mostra a propria img selecionada.
+                    ? CircleAvatar(
+                        radius: 64,
+                        backgroundImage: MemoryImage(_image!),
+                      )
+                    // se n houver imagem selecionada ainda (o _image é null),
+                    //  mostra a img da net;
+                    : const CircleAvatar(
+                        radius: 64,
+                        backgroundImage: NetworkImage(
+                          'https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg',
+                        ),
+                      ),
                 Positioned(
                   bottom: -10,
                   left: 80,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: selectImage,
                     icon: const Icon(Icons.add_a_photo),
                   ),
                 ),
@@ -108,7 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   username: _usernameController.text,
                   bio: _bioController.text,
                   // PROX COISA, CRIAR UPLOAD DA FT DE PERFIL
-                  file: ,
+                  // file: ,
                 );
                 debugPrint(res);
               },

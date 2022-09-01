@@ -45,5 +45,12 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<!-- PRA PODER PEGAR OS ARQUIVO NO IOS -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library Usage</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera Usage</string>
+	<key>NSMicrophoneLibraryUsageDescription</key>
+	<string>Microphone Usage</string>
 </dict>
 </plist>

@@ -22,6 +22,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _usernameController = TextEditingController();
   // vai armazenar a imagem p/ perfil selecionada pelo usuário.
   Uint8List? _image;
+  // vai dizer quando deve mostrar uma animação de carregamento, que deve
+  // aparecer quando apertar em "criar conta"
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -38,6 +41,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _image = image;
     });
+  }
+
+  /// Método que faz a criação do usuário
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res;
+    // esse try catch vai pegar a exceção quando tentar enviar uma ft vazia e
+    // mostrar a snackbar
+    try {
+      res = await AuthMethods().signUpUser(
+        email: _emailController.text,
+        password: _passwordController.text,
+        username: _usernameController.text,
+        bio: _bioController.text,
+        file: _image!,
+      );
+
+      // assim q o processo acabar, a animação de carregamento acaba
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (res != 'success') {
+        showSnackBar(res, context);
+      }
+    } catch (err) {
+      setState(() {
+        _isLoading = false;
+      });
+      showSnackBar('Você deve inserir uma imagem de perfil!', context);
+    }
+    // debugPrint(res);
   }
 
   @override
@@ -127,17 +165,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 24),
                 // BOTAO DE LOGIN
                 InkWell(
-                  onTap: () async {
-                    // Método que faz a criação do usuário
-                    String res = await AuthMethods().signUpUser(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                      username: _usernameController.text,
-                      bio: _bioController.text,
-                      file: _image!,
-                    );
-                    debugPrint(res);
-                  },
+                  onTap: signUpUser,
                   child: Container(
                     width: double.infinity,
                     // CENTRALIZAR O CHILD NO CONTAINER
@@ -151,7 +179,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       color: blueColor,
                     ),
-                    child: const Text('Criar conta'),
+                    child: _isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: primaryColor,
+                            ),
+                          )
+                        : const Text('Criar conta'),
                   ),
                 ),
                 const SizedBox(height: 12),

@@ -151,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       color: blueColor,
                     ),
-                    child: const Text('Fazer Login'),
+                    child: const Text('Criar conta'),
                   ),
                 ),
                 const SizedBox(height: 12),

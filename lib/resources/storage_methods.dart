@@ -16,7 +16,7 @@ class StorageMethods {
     // exemplo:
     // childName = profilePics
     // _auth.currentUser!.uid = idDoCara
-    // a img vai ser salva em /profilePics/idDoCara/imagem
+    // a img vai ser salva em /profilePics/idDoCara.jpeg <= imagem com id no nome
     Reference ref =
         _storage.ref().child(childName).child(_auth.currentUser!.uid);
 

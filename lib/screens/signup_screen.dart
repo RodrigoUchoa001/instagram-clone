@@ -134,8 +134,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       password: _passwordController.text,
                       username: _usernameController.text,
                       bio: _bioController.text,
-                      // PROX COISA, CRIAR UPLOAD DA FT DE PERFIL
-                      // file: ,
+                      file: _image!,
                     );
                     debugPrint(res);
                   },

@@ -20,7 +20,7 @@ class StorageMethods {
     Reference ref =
         _storage.ref().child(childName).child(_auth.currentUser!.uid);
 
-    // upando a img de fato
+    // upando a img de fato naquele caminho
     UploadTask uploadTask = ref.putData(file);
     TaskSnapshot snap = await uploadTask;
 

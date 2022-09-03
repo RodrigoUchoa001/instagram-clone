@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/resources/storage_methods.dart';
+import 'package:instagram_clone/utils/utils.dart';
 
 ///Classe que contém métodos usados para fazer autenticação no aplicativo.
 class AuthMethods {
@@ -26,7 +27,7 @@ class AuthMethods {
     String res = 'Deu algum erro';
     try {
       //Se nenhum campo está vazio:
-      if (noneSignUpFildEmpty(email, username, password, bio, file)) {
+      if (noneOfFieldsAreEmpty([email, username, password, bio, file])) {
         // registra o usuário
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -59,17 +60,5 @@ class AuthMethods {
       res = err.toString();
     }
     return res;
-  }
-
-  /// Testa se nenhum dos campos passados por parâmetro é vazio.
-  bool noneSignUpFildEmpty(String email, String username, String password,
-      String bio, Uint8List file) {
-    if (email.isNotEmpty ||
-        password.isNotEmpty ||
-        username.isNotEmpty ||
-        file != null) {
-      return true;
-    }
-    return false;
   }
 }

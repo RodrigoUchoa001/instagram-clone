@@ -18,6 +18,18 @@ pickImage(ImageSource source) async {
   print('nenhuma imagem selecionada!');
 }
 
+/// Testa se nenhum dos campos passados por parâmetro é vazio.
+bool noneOfFieldsAreEmpty(List<dynamic> itens) {
+  bool result = true;
+  itens.forEach((element) {
+    if (element == null) {
+      result = false;
+    }
+  });
+  return result;
+}
+
+/// exibe snackbar com a msg passada.
 showSnackBar(String content, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(content: Text(content)),

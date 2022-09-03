@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,12 +15,34 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isloading = false;
 
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isloading = true;
+    });
+    String res = await AuthMethods().loginUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    setState(() {
+      _isloading = false;
+    });
+
+    if (res == 'sucesso') {
+      showSnackBar('loguei', context);
+      //
+    } else {
+      showSnackBar(res, context);
+    }
   }
 
   @override
@@ -62,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 24),
             // BOTAO DE LOGIN
             InkWell(
-              onTap: () {},
+              onTap: loginUser,
               child: Container(
                 width: double.infinity,
                 // CENTRALIZAR O CHILD NO CONTAINER
@@ -76,7 +100,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   color: blueColor,
                 ),
-                child: const Text('Fazer Login'),
+                child: _isloading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: primaryColor,
+                        ),
+                      )
+                    : const Text('Fazer Login'),
               ),
             ),
             const SizedBox(height: 12),

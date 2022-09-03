@@ -61,4 +61,27 @@ class AuthMethods {
     }
     return res;
   }
+
+  /// método pra fazer login
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = 'Deu algum erro';
+    try {
+      // msm logica do signup
+      if (noneOfFieldsAreEmpty([email, password])) {
+        await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        res = 'sucesso';
+      } else {
+        res = 'preencha todos os campos!';
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
 }
